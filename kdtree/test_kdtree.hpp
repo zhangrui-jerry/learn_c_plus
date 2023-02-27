@@ -2,6 +2,7 @@
 #include "kdtree.hpp"
 #include "kdsearch.hpp"
 #include "nanokdtree.hpp"
+#include "kdtree_gpu.h"
 #include <vector>
 #include <algorithm>
 #include "TimeTest/TimeTest.hpp"
@@ -44,8 +45,8 @@ void test_kdsearch()
     INIT_TIME();
 
     
-    constexpr int n = 4000 * 100;
-    auto data = generate_data(n / 100);
+    constexpr int n = 4096 * 8;
+    auto data = generate_data(n);
     Kdtree kdtree;
     kdtree.set_data(data);
     START_TIME("build nn tree");
@@ -90,6 +91,16 @@ void test_kdsearch()
         res2[i] = data[indexs[0]];
     }
     END_TIME("nano search");
+    
+    SearchGpu2 sg;
+    START_TIME("gpu time malloc");
+    sg.set_param(test_data.size(), data.size());
+    END_TIME("gpu time malloc");
+
+    START_TIME("gpu time");
+    auto res_gpu = sg.kdsearch_gpu(test_data, data);
+    END_TIME("gpu time");
+    sg.release();
 
     auto test_res = [&res0, &n](std::vector<PointT>& res)
     {
@@ -103,8 +114,9 @@ void test_kdsearch()
         return (double)(n - cnt) / (double)n;
     };
 
-    std::cout << test_res(res1) << std::endl;
-    std::cout << test_res(res2) << std::endl;
+    std::cout << "res1 " << test_res(res1) << std::endl;
+    std::cout << "res2 " << test_res(res2) << std::endl;
+    std::cout << "gpu " << test_res(res_gpu) << std::endl;
 
     PRINTF_TIME();
 
