@@ -1,7 +1,8 @@
 #include <iostream>
+#include "icp.hpp"
 
 int main()
 {
-    test();
+    icp::test();
     std::cout << "test finish" << std::endl; 
 }
