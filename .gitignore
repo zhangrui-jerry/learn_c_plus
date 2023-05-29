@@ -7,3 +7,8 @@
 /tcmalloc/build
 /test_modulse/build
 /test_modulse/extra
+/cmake_add_subdirectory/build
+/cmake_add_subdirectory/extra
+/kd-tree-0410/build
+/point_search/build
+/point_search/3rdParty
