@@ -1,0 +1,9 @@
+/cuda/build
+/icp_match/build
+/icp_match/3rdParty
+/kdtree/build
+/point_search/build
+/point_search/3rdParty
+/tcmalloc/build
+/test_modulse/build
+/test_modulse/extra
